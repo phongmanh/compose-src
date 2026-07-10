@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!--
+        Trust configuration for the GAMAN API domains (*.gamanjsc.com).
+        The bundled CA chain (res/raw/gamanjsc_ca.pem) is added *alongside*
+        the system trust store, so connections keep working even on devices
+        whose root store is missing/outdated the Sectigo/USERTrust roots.
+        Chain: *.gamanjsc.com -> Sectigo R36 -> Sectigo Root R46 -> USERTrust RSA
+    -->
+    <domain-config>
+        <domain includeSubdomains="true">gamanjsc.com</domain>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="@raw/gamanjsc_ca" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>

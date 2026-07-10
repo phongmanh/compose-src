@@ -1,0 +1,18 @@
+<resources>
+    <!-- Login -->
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
+    <string name="login_welcome_title">Welcome back</string>
+    <string name="login_welcome_subtitle">Sign in to continue</string>
+    <string name="login_forgot_password">Forgot password?</string>
+    <string name="login_sign_in">Sign in</string>
+    <string name="login_no_account">Don\'t have an account?</string>
+    <string name="login_sign_up">Sign up</string>
+
+    <!-- Change password -->
+    <string name="change_password_title">Change Password</string>
+    <string name="change_password_current">Current Password</string>
+    <string name="change_password_new">New Password</string>
+    <string name="change_password_confirm">Confirm Password</string>
+    <string name="change_password_mismatch">Passwords do not match</string>
+</resources>

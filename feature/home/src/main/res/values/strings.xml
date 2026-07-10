@@ -1,0 +1,30 @@
+<resources>
+    <string name="home_loading">Loading…</string>
+    <string name="home_error">Unable to load your profile</string>
+    <string name="home_notifications">Notifications</string>
+    <string name="home_avatar_placeholder">User avatar placeholder</string>
+
+    <!-- Header greeting (Vietnamese — current app locale) -->
+    <string name="home_greeting_morning">Chào buổi sáng</string>
+    <string name="home_greeting_afternoon">Chào buổi chiều</string>
+    <string name="home_greeting_evening">Chào buổi tối</string>
+
+    <!-- Attendance summary card -->
+    <string name="home_attendance_title">Chấm công hôm nay</string>
+    <string name="home_check_in">Giờ vào</string>
+    <string name="home_check_out">Giờ ra</string>
+    <string name="home_time_placeholder">--:--</string>
+
+    <!-- Sections -->
+    <string name="home_section_actions">Chức năng</string>
+    <string name="home_payment_subtitle">Hóa đơn &amp; dịch vụ</string>
+
+    <!-- Action grid (Vietnamese — current app locale) -->
+    <string name="home_action_overview">Tổng quan</string>
+    <string name="home_action_customers">Khách hàng</string>
+    <string name="home_action_contracts">Hợp đồng</string>
+    <string name="home_action_attendance">Chấm công</string>
+    <string name="home_action_advance">Tạm ứng</string>
+    <string name="home_action_refund">Hoàn ứng</string>
+    <string name="home_action_payment">Thanh toán</string>
+</resources>

@@ -1,0 +1,82 @@
+[versions]
+agp = "9.2.1"
+coreKtx = "1.19.0"
+junit = "4.13.2"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
+lifecycleRuntimeKtx = "2.10.0"
+activityCompose = "1.13.0"
+kotlin = "2.2.10"
+composeBom = "2025.12.00"
+retrofit = "2.9.0"
+okhttp = "4.11.0"
+okhttp-logging = "4.11.0"
+gson = "2.10.1"
+hilt = "2.60"
+ksp = "2.1.10-1.0.30"
+hilt-navigation = "1.2.0"
+splashscreen = "1.0.1"
+navigation3 = "1.0.0"
+# Follows the androidx.lifecycle release train (not navigation3's 1.0.0); must match lifecycleRuntimeKtx.
+lifecycleViewmodelNav3 = "2.10.0"
+kotlinSerialization = "2.1.21"
+kotlinxSerializationCore = "1.8.1"
+dataStore = "1.2.1"
+serialization-json ="1.9.0"
+protobuf = "0.10.0"
+protobufKotlinLite = "4.32.1"
+appcompat = "1.7.1"
+material = "1.14.0"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-compose-material3-adaptive-navigation-suite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite" }
+retrofit = {group = "com.squareup.retrofit2", name= "retrofit", version.ref = "retrofit"}
+retrofit-converter = {group = "com.squareup.retrofit2", name= "converter-scalars", version.ref = "retrofit"}
+retrofit-gson = {group = "com.squareup.retrofit2", name= "converter-gson", version.ref = "retrofit"}
+okhttp = {group = "com.squareup.okhttp3", name= "okhttp", version.ref = "okhttp"}
+okhttp-logging = {group = "com.squareup.okhttp3", name= "logging-interceptor", version.ref = "okhttp-logging"}
+gson = {group = "com.google.code.gson", name= "gson", version.ref = "gson"}
+hilt = {group = "com.google.dagger", name= "hilt-android", version.ref = "hilt"}
+hilt-compiler = {group = "com.google.dagger", name= "hilt-compiler", version.ref = "hilt"}
+material-icons = {group = "androidx.compose.material", name= "material-icons-extended"}
+hilt-navigation = {group = "androidx.hilt", name= "hilt-navigation-compose", version.ref = "hilt-navigation"}
+splashscreen = {group = "androidx.core", name= "core-splashscreen", version.ref = "splashscreen"}
+androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation3" }
+androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation3" }
+androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNav3" }
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
+datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "dataStore" }
+datastore = { group = "androidx.datastore", name = "datastore", version.ref = "dataStore" }
+serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization-json" }
+protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobufKotlinLite" }
+protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobufKotlinLite" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+# Gradle plugin artifact — used only by :build-logic convention plugins (compileOnly)
+# to reference the AGP DSL types. Not a runtime dependency of any app module.
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization" }
+protobuf = { id = "com.google.protobuf", version.ref = "protobuf" }

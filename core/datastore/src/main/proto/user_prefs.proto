@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option java_package = "com.liam.compose.core.datastore";
+option java_multiple_files = true;
+option java_outer_classname = "UserPrefsProto";
+
+// Mirrors com.liam.compose.features.auth.data.model.AuthModel
+message AuthProto {
+  string access_token = 1;
+  int32 access_token_life_time = 2;
+  // Epoch millis; 0 = unset (proto3 has no null).
+  int64 access_token_expire_date = 3;
+}
+
+// Mirrors com.liam.compose.features.auth.data.model.UserModel
+message UserProto {
+  string user_name = 1;
+  string full_name = 2;
+  string role = 3;
+}
+
+// Root document persisted by the Proto DataStore (user_prefs.pb).
+message UserPreferences {
+  AuthProto auth = 1;
+  UserProto user = 2;
+}
