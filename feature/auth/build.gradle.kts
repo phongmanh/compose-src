@@ -32,6 +32,8 @@ dependencies {
     // and the Retrofit instances (default = main API) provided by NetworkModule.
     implementation(project(":core:networking"))
     implementation(project(":core:navigation"))
+    // UserModel / GatewayAuthModel / IAuthSessionStore contract this feature fulfils.
+    implementation(project(":core:model"))
 
     // Compose (BOM + ui + ui-tooling-preview + debug ui-tooling come from the convention plugin)
     implementation(libs.androidx.compose.material3)

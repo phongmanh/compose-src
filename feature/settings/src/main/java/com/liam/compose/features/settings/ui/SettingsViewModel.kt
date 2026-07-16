@@ -3,7 +3,7 @@ package com.liam.compose.features.settings.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.liam.compose.core.datastore.UserPreferencesRepository
-import com.liam.compose.features.auth.data.model.UserModel
+import com.liam.compose.core.model.UserModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

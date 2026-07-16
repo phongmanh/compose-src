@@ -30,9 +30,9 @@ tasks.matching { it.name.matches(Regex("^(ksp|compile)(Debug|Release)Kotlin$")) 
     }
 
 dependencies {
-    // AuthModel / UserModel / AuthSessionStore (persisted session types) live in the
-    // auth feature; IAuthenticator is the networking token contract this module fulfils.
-    implementation(project(":feature:auth"))
+    // UserModel / GatewayAuthModel / IAuthSessionStore (persisted session types + contract) live in
+    // :core:model; ITokenProvider is the networking token contract this module fulfils.
+    implementation(project(":core:model"))
     implementation(project(":core:networking"))
 
     // Hilt (hilt + hilt-compiler) comes from the convention plugin.

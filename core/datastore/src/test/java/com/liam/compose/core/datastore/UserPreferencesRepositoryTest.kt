@@ -1,7 +1,7 @@
 package com.liam.compose.core.datastore
 
 import androidx.datastore.core.DataStoreFactory
-import com.liam.compose.features.auth.data.model.UserModel
+import com.liam.compose.core.model.UserModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

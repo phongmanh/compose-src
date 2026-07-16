@@ -3,7 +3,7 @@ package com.liam.compose.features.auth.data.remote
 import com.liam.compose.features.auth.data.model.AuthPostRequest
 import com.liam.compose.features.auth.data.model.ChangePassModel
 import com.liam.compose.core.networking.model.AppResponse
-import com.liam.compose.features.auth.data.model.UserModel
+import com.liam.compose.core.model.UserModel
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST

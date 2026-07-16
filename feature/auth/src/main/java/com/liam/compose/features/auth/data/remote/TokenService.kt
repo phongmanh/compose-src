@@ -1,6 +1,6 @@
 package com.liam.compose.features.auth.data.remote
 
-import com.liam.compose.features.auth.data.model.GatewayAuthModel
+import com.liam.compose.core.model.GatewayAuthModel
 import com.liam.compose.features.auth.data.model.AuthPostRequest
 import com.liam.compose.core.networking.model.AppResponse
 import retrofit2.http.Body

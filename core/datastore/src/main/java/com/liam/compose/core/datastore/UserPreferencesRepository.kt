@@ -1,9 +1,9 @@
 package com.liam.compose.core.datastore
 
 import androidx.datastore.core.DataStore
-import com.liam.compose.features.auth.data.model.GatewayAuthModel
-import com.liam.compose.features.auth.data.model.UserModel
-import com.liam.compose.features.auth.data.repository.IAuthSessionStore
+import com.liam.compose.core.model.GatewayAuthModel
+import com.liam.compose.core.model.UserModel
+import com.liam.compose.core.model.IAuthSessionStore
 import com.liam.compose.core.networking.repository.ITokenProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first

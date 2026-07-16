@@ -1,4 +1,4 @@
-package com.liam.compose.features.auth.data.model
+package com.liam.compose.core.model
 
 import com.google.gson.annotations.SerializedName
 

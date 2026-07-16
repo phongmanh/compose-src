@@ -61,7 +61,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.liam.compose.features.home.R
-import com.liam.compose.features.auth.data.model.UserModel
+import com.liam.compose.core.model.UserModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date

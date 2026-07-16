@@ -12,9 +12,9 @@ dependencies {
     implementation(project(":core:networking"))
     implementation(project(":core:navigation"))
     // Signed-in user (fullName for the greeting) is read from the proto DataStore;
-    // :feature:auth exposes the UserModel type the repository returns.
+    // :core:model exposes the UserModel type the repository returns.
     implementation(project(":core:datastore"))
-    implementation(project(":feature:auth"))
+    implementation(project(":core:model"))
 
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

@@ -1,7 +1,7 @@
 package com.liam.compose.core.datastore.di
 
 import com.liam.compose.core.datastore.UserPreferencesRepository
-import com.liam.compose.features.auth.data.repository.IAuthSessionStore
+import com.liam.compose.core.model.IAuthSessionStore
 import com.liam.compose.core.networking.repository.ITokenProvider
 import dagger.Binds
 import dagger.Module

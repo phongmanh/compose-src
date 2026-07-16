@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.liam.compose.features.auth.data.model.AuthPostRequest
 import com.liam.compose.features.auth.data.model.ChangePassModel
-import com.liam.compose.features.auth.data.model.UserModel
+import com.liam.compose.core.model.UserModel
 import com.liam.compose.features.auth.data.repository.AuthRepository
-import com.liam.compose.features.auth.data.repository.IAuthSessionStore
+import com.liam.compose.core.model.IAuthSessionStore
 import com.liam.compose.features.auth.ui.state.GatewayAuthState
 import com.liam.compose.features.auth.ui.state.LoginUiState
 import dagger.hilt.android.lifecycle.HiltViewModel

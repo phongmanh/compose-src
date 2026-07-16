@@ -15,6 +15,7 @@ dependencies {
     implementation(project(":core:networking"))
     // Signed-in user (UserModel) and the ChangePassword screen the settings screen navigates to.
     implementation(project(":core:datastore"))
+    implementation(project(":core:model"))
     implementation(project(":feature:auth"))
 
     // Compose (BOM + ui + ui-tooling-preview + debug ui-tooling come from the convention plugin)

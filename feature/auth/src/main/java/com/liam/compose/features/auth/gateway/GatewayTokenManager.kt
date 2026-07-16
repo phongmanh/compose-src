@@ -2,7 +2,7 @@ package com.liam.compose.features.auth.gateway
 
 import com.liam.compose.features.auth.data.model.AuthPostRequest
 import com.liam.compose.features.auth.data.repository.AuthRepository
-import com.liam.compose.features.auth.data.repository.IAuthSessionStore
+import com.liam.compose.core.model.IAuthSessionStore
 import javax.inject.Inject
 import javax.inject.Singleton
 
