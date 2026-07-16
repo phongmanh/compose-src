@@ -28,6 +28,7 @@ rootProject.name = "JetpackCompose"
 include(":app")
 include(":core:navigation")
 include(":core:networking")
+include(":core:model")
 include(":core:datastore")
 include(":core:designsystem")
 include(":feature:auth")
