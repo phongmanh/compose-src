@@ -29,18 +29,32 @@ Common rules and conventions for all mobile projects (Java / Kotlin).
 - Null safety: avoid `!!`; use `?.`, `?:`, `requireNotNull` with a message.
 - Use `data class` for models, `sealed class`/`sealed interface` for state and events.
 - Coroutines + Flow for async work; never block the main thread.
-- Naming: `PascalCase` classes, `camelCase` functions/variables, `SCREAMING_SNAKE_CASE` constants.
 - Keep functions small (< 30 lines as a guideline); one function, one job.
 - No magic numbers/strings — extract to constants or resources.
+- Business logic (ViewModels, UseCases, Repositories) must be unit-testable — this is a design
+  constraint.
 
-## 4. UI & Resources
+# 4. Naming Conventions
+
+- Classes/Objects/Interfaces: `PascalCase`
+- Functions/variables: `camelCase`
+- Constants (`const val`, top-level): `SCREAMING_SNAKE_CASE`
+- Composables: `PascalCase`, noun phrases (`ProfileScreen`, not `ShowProfile`)
+- UseCases: verb phrase + `UseCase` suffix (`GetUserProfileUseCase`)
+- Repositories: noun + `Repository` suffix, interface has no prefix, impl has `Impl` suffix
+  (`UserRepository` / `UserRepositoryImpl`)
+- Test files: `<ClassUnderTest>Test.kt`
+- Resource IDs: `<screen>_<component>_<type>` (e.g. `login_email_input`)
+
+
+## 5. UI & Resources
 
 - All user-facing strings in `strings.xml` (localization-ready). No hardcoded text.
 - Dimensions, colors in resources or design system tokens; support dark mode.
 - Handle configuration changes properly — state survives rotation (ViewModel, SavedStateHandle).
 - Design for all screen sizes; avoid fixed dimensions where flexible layouts work.
 
-## 5. Error Handling & State
+## 6. Error Handling & State
 
 - Model UI state explicitly: `Loading / Success / Error` (sealed classes).
 - Never swallow exceptions silently; log and surface user-friendly messages.
@@ -53,12 +67,6 @@ Common rules and conventions for all mobile projects (Java / Kotlin).
 - Lazy-load and paginate lists; use `DiffUtil` / stable keys in Compose.
 - Optimize images (proper sizing, caching via Glide/Coil).
 
-## 7. Testing
-
-- Business logic (ViewModels, UseCases, Repositories) must be unit-testable — this is a design constraint.
-- Write unit tests for logic, instrumentation/UI tests for critical flows.
-- Follow Arrange–Act–Assert; one behavior per test.
-
 ## 8. Code Quality & Process
 
 - Enforce static analysis: ktlint/detekt (Kotlin), Lint. Fix warnings, don't suppress blindly.
@@ -66,9 +74,3 @@ Common rules and conventions for all mobile projects (Java / Kotlin).
 - Code review required before merge; no direct pushes to main.
 - Boy Scout Rule: leave the code cleaner than you found it.
 
-## 9. Security
-
-- No secrets/API keys in source code or version control.
-- Use encrypted storage for sensitive data (EncryptedSharedPreferences, Keystore).
-- HTTPS only; validate all input from external sources.
-- Obfuscate release builds (R8/ProGuard).

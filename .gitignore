@@ -16,3 +16,6 @@ local.properties
 # Secrets (Guideline §9 — never commit)
 secrets.properties
 .kotlin
+
+# Relay per-task scratch (runbook itself is kept)
+.claude/relay/*/

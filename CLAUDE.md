@@ -10,6 +10,7 @@ Multi-module Gradle build:
 - `:app` — application module; app bootstrap, bottom-nav shell, cross-module DI wiring.
 - `:core:navigation` — reusable, app-agnostic Navigation 3 machinery.
 - `:core:networking` — Retrofit/OkHttp stack, interceptors, error mapping, repository base + result types.
+- `:core:model` — shared session/user domain types (`UserModel`, `GatewayAuthModel`) and the `IAuthSessionStore` persistence contract; leaf module so `:core:datastore` can implement the contract without depending on `:feature:auth`.
 - `:core:datastore` — Proto DataStore persistence (session/token/user prefs).
 - `:core:designsystem` — Compose theme (`JetpackComposeTheme`) + Material 3, `api`-exposed to consumers.
 - `:feature:auth` — login, change-password, gateway client-credentials token.
@@ -52,21 +53,23 @@ Shared Gradle setup lives in the `build-logic` composite build and is applied by
 `COMPILE_SDK`/`MIN_SDK`/`JAVA_VERSION` and the `libs` catalog accessor live in `build-logic/.../ProjectExtensions.kt`. Copy an existing module's `plugins { }` block as the template for a new one.
 
 ### Module dependency graph
-- `:core:networking`, `:core:navigation`, `:core:designsystem` — leaf modules, no internal deps.
-- `:feature:auth` → `:core:networking`, `:core:navigation`.
-- `:core:datastore` → `:feature:auth`, `:core:networking` — note this core module depends on a **feature** module (it needs the auth session/user types and fulfils the auth + networking token contracts). Not a strict layering; keep the arrow in mind before adding deps.
-- `:feature:home` / `:feature:settings` → `:core:{networking,navigation,datastore}` + `:feature:auth`.
+- `:core:networking`, `:core:navigation`, `:core:designsystem`, `:core:model` — leaf modules, no internal deps.
+- `:feature:auth` → `:core:networking`, `:core:navigation`, `:core:model`.
+- `:core:datastore` → `:core:model`, `:core:networking` — a core module depending only on other core modules (this used to reach into `:feature:auth` for the session/user types; they now live in `:core:model` so the arrow points the right way).
+- `:feature:home` → `:core:{networking,navigation,datastore,model}`.
+- `:feature:settings` → `:core:{navigation,networking,datastore,model}` + `:feature:auth` (for `ChangePasswordScreen`/`AuthViewModel`).
 - `:app` → every core + feature module.
 
-**Package naming mirrors the module path — follow it for new modules and files**: feature modules use `com.liam.compose.features.<name>` (`features.auth`, `features.home`, `features.settings`), core modules use `com.liam.compose.core.<name>` (`core.navigation`, `core.designsystem`, `core.networking`, `core.datastore`), and `:app` is `com.liam.compose` (bootstrap under `com.liam.compose.entry`). Each module's `namespace` in its `build.gradle.kts` matches its package (and `:core:datastore`'s proto `java_package` matches too).
+**Package naming mirrors the module path — follow it for new modules and files**: feature modules use `com.liam.compose.features.<name>` (`features.auth`, `features.home`, `features.settings`), core modules use `com.liam.compose.core.<name>` (`core.navigation`, `core.designsystem`, `core.networking`, `core.datastore`, `core.model`), and `:app` is `com.liam.compose` (bootstrap under `com.liam.compose.entry`). Each module's `namespace` in its `build.gradle.kts` matches its package (and `:core:datastore`'s proto `java_package` matches too).
 
 ### Module responsibilities
 - **`:app`** (`com.liam.compose`): `entry/` holds `Application` (`@HiltAndroidApp`), `MainActivity` (`@AndroidEntryPoint`), `MainViewModel`, bootstrap state (`AuthState`, `GatewayAuthState`), `AppNavGraph.kt` (the `ReportKey` + `getAppEntries` aggregator), `BottomBar.kt` (`BottomTab` + `AppBottomBar`). Owns `res/xml/network_security_config.xml` and the bundled CA at `res/raw/gamanjsc_ca.pem`. Also owns the cross-module Hilt bindings (via `:core:datastore`, see DI).
 - **`:core:navigation`** (`com.liam.compose.core.navigation`): reusable Nav 3 machinery, no feature/DI deps. `api`-exposes the navigation3 libs so consumers get `NavKey`/`NavBackStack` transitively.
 - **`:core:networking`** (`com.liam.compose.core.networking`): `NetworkModule` (Retrofit x2, see DI), `TokenInterceptor`, `ITokenProvider`, `ErrorInterceptor`/`ErrorMapper`/`ApiException`, `BaseRepository` + `RepositoryHelper`, and the result/response models. Injects `BuildConfig.GATEWAY_KEY` from `secrets.properties`.
-- **`:core:datastore`** (`com.liam.compose.core.datastore`): Proto DataStore (`user_prefs.proto` → `UserPreferences`). `UserPreferencesRepository` is the single impl of **both** `IAuthSessionStore` (auth) and `ITokenProvider` (networking); `AuthBindingsModule` binds them.
+- **`:core:model`** (`com.liam.compose.core.model`): `UserModel`, `GatewayAuthModel` (Gson-annotated persisted/wire types) and the `IAuthSessionStore` contract. No DI, no Android deps beyond Gson annotations — pure shared types so both `:core:datastore` (impl) and `:feature:auth` (consumer) can depend on it without a core→feature edge.
+- **`:core:datastore`** (`com.liam.compose.core.datastore`): Proto DataStore (`user_prefs.proto` → `UserPreferences`). `UserPreferencesRepository` is the single impl of **both** `IAuthSessionStore` (`:core:model`) and `ITokenProvider` (`:core:networking`); `AuthBindingsModule` binds them.
 - **`:core:designsystem`** (`com.liam.compose.core.designsystem`): `theme/` (`Color`, `Type`, `Theme` → `JetpackComposeTheme`). `api`-exposes `androidx.compose.material3` so consumers get `MaterialTheme`/`colorScheme` transitively. Applied at the app root by `MainActivity`; feature modules can depend on it when they need brand tokens.
-- **`:feature:auth`** (`com.liam.compose.features.auth`): `data/{model,remote,repository}`, `gateway/` (`GatewayTokenManager`, `GatewayClientCredentials`), `di/AuthModule`, `navigation/` (`AuthKey`, `authEntries`), `ui/{screens,state,viewmodel}`. Declares the `IAuthSessionStore` contract fulfilled by datastore.
+- **`:feature:auth`** (`com.liam.compose.features.auth`): `data/{model,remote,repository}`, `gateway/` (`GatewayTokenManager`, `GatewayClientCredentials`), `di/AuthModule`, `navigation/` (`AuthKey`, `authEntries`), `ui/{screens,state,viewmodel}`. Consumes the `IAuthSessionStore` contract (`:core:model`) fulfilled by datastore; `data/model` here holds only feature-local request payloads (`AuthPostRequest`, `ChangePassModel`), not the shared session types.
 - **`:feature:home`** / **`:feature:settings`**: `navigation/` (`HomeKey`/`SettingKey`, `homeEntries`/`settingsEntries`) + `ui/`. Follow the `data/{model,remote,repository}` + `ui/{screens,state,viewmodel}` layering when a feature grows real data.
 
 ### Navigation — Navigation 3 (not classic Jetpack Navigation)
@@ -83,7 +86,7 @@ Generic pieces live in **`:core:navigation`**:
 ### DI — Hilt, single network module, cross-module bindings
 `NetworkModule` (in `:core:networking`) is now a **single** module (the old debug/release split that trusted all SSL certs is gone — there are no build-variant source sets). It provides two Retrofit instances via the `@AuthRetrofit` qualifier: default = main API (`gm-platform-ichi-api.gamanjsc.com/ichi/api/v1.0/`), `@AuthRetrofit` = OAuth/token service (`oauth.gamanjsc.com/gm/api/v1.0/`). Retrofit **services** are provided per feature (`:feature:auth`'s `AuthModule` creates `AuthService` on the default Retrofit and `TokenService` on the `@AuthRetrofit` one).
 
-Contracts are bound across modules by `AuthBindingsModule` (in `:core:datastore`): `UserPreferencesRepository` supplies both `IAuthSessionStore` (auth's persistence contract) and `ITokenProvider` (networking's token contract). `App` is `@HiltAndroidApp`; `MainActivity` is `@AndroidEntryPoint`; ViewModels are `@HiltViewModel`.
+Contracts are bound across modules by `AuthBindingsModule` (in `:core:datastore`): `UserPreferencesRepository` supplies both `IAuthSessionStore` (`:core:model`'s persistence contract) and `ITokenProvider` (networking's token contract). `App` is `@HiltAndroidApp`; `MainActivity` is `@AndroidEntryPoint`; ViewModels are `@HiltViewModel`.
 
 ### Networking & error handling
 Retrofit + OkHttp + Gson. `TokenInterceptor` reads the persisted access token via `ITokenProvider.accessToken()` (DataStore-backed, bridged with `runBlocking` since OkHttp is synchronous). If a token exists it adds `Authorization: Bearer <token>`; **otherwise it falls back to a `gm-gateway-key: <BuildConfig.GATEWAY_KEY>` header** (key injected from `secrets.properties`, Guideline §9). `ErrorMapper` converts any `Throwable` into the typed `ApiException` sealed hierarchy, each case exposing a user-facing `userMessage`. `:app`'s `network_security_config.xml` adds the bundled `res/raw/gamanjsc_ca.pem` CA chain alongside the system trust store for `*.gamanjsc.com`.
@@ -97,7 +100,3 @@ Similarly there are two response envelopes: `ApiResponse<T>` and `AppResponse<T>
 
 ### Startup flow
 `MainActivity` installs a splash screen. `MainViewModel` injects `UserPreferencesRepository` (`:core:datastore`) and `GatewayTokenManager` (`:feature:auth`). Its `uiState: StateFlow<AuthState>` is derived from the persisted `userModel` (Authenticated once a `userName` is stored, else Unauthenticated, initial Loading). In `init` it ensures a gateway client-credentials token exists: if the DataStore has none, `GatewayTokenManager.ensureGatewayToken()` calls `AuthRepository.getToken(...)` with `GatewayClientCredentials` and persists the result, driving `gatewayAuthState` (Authenticated/Failed).
-
-
-## Instruction Index
-- Code style & conventions [GUIDE](CODE_GUIDELINES.md)
