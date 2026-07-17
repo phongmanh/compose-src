@@ -34,6 +34,7 @@ dependencies {
     implementation(project(":core:navigation"))
     // UserModel / GatewayAuthModel / IAuthSessionStore contract this feature fulfils.
     implementation(project(":core:model"))
+    implementation(project(":core:components"))
 
     // Compose (BOM + ui + ui-tooling-preview + debug ui-tooling come from the convention plugin)
     implementation(libs.androidx.compose.material3)

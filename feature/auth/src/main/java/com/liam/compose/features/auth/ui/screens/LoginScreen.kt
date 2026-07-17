@@ -19,7 +19,6 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,6 +44,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.liam.compose.core.components.AppButton
 import com.liam.compose.features.auth.R
 import com.liam.compose.features.auth.ui.viewmodel.AuthViewModel
 
@@ -218,22 +218,12 @@ fun LoginForm(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Button(
+        AppButton(
+            text = stringResource(R.string.login_sign_in),
             onClick = onLoginClick,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-            enabled = canSubmit && !isLoading
-        ) {
-            if (isLoading) {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .height(20.dp)
-                        .padding(end = 8.dp)
-                )
-            }
-            Text(stringResource(R.string.login_sign_in))
-        }
+            enabled = canSubmit && !isLoading,
+            loading = isLoading
+        )
 
         Spacer(modifier = Modifier.height(24.dp))
 

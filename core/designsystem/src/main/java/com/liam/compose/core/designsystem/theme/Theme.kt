@@ -63,7 +63,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun JetpackComposeTheme(
+fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Off by default so the brand palette (not the device wallpaper) drives the app on Android 12+.
     dynamicColor: Boolean = false,

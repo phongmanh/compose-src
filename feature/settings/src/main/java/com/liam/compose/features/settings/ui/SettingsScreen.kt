@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -19,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.liam.compose.core.components.AppButton
+import com.liam.compose.core.components.AppOutlinedButton
 import com.liam.compose.features.settings.R
 import com.liam.compose.core.navigation.LocalNavBackStack
 import com.liam.compose.core.navigation.navigate
@@ -53,24 +53,16 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
             Spacer(modifier = Modifier.height(32.dp))
         }
 
-        Button(
-            onClick = { backStack.navigate(SettingKey.ChangePassword(user.userName.orEmpty())) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-        ) {
-            Text(stringResource(R.string.settings_change_password))
-        }
+        AppButton(
+            text = stringResource(R.string.settings_change_password),
+            onClick = { backStack.navigate(SettingKey.ChangePassword(user.userName.orEmpty())) }
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedButton(
-            onClick = { viewModel.logout() },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-        ) {
-            Text(stringResource(R.string.settings_logout))
-        }
+        AppOutlinedButton(
+            text = stringResource(R.string.settings_logout),
+            onClick = { viewModel.logout() }
+        )
     }
 }

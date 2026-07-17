@@ -1,13 +1,9 @@
 package com.liam.compose.entry
 
 sealed class AuthState {
+    // Init state
     object Loading : AuthState()
     object Authenticated : AuthState()
-    object Unauthenticated : AuthState()
-}
-
-sealed class GatewayAuthState {
-    object Authenticated : GatewayAuthState()
-    object Unauthenticated : GatewayAuthState()
-    object Failed : GatewayAuthState()
+    object UnAuthenticated : AuthState()
+    object Failed : AuthState()
 }

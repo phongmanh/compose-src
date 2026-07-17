@@ -29,6 +29,7 @@ dependencies {
     implementation(project(":core:networking"))
     implementation(project(":core:model"))
     implementation(project(":core:datastore"))
+    implementation(project(":core:components"))
     implementation(project(":core:designsystem"))
     implementation(project(":feature:auth"))
     implementation(project(":feature:home"))
