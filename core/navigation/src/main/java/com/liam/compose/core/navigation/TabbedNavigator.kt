@@ -40,13 +40,11 @@ class TabbedNavigator<T>(
 
     /** Select [tab]; re-selecting the current tab pops its stack to root. */
     fun select(tab: T) {
-        currentBackStack.popToRoot()
-        selectedTab = tab
-        /*        if (tab == selectedTab) {
-                    currentBackStack.popToRoot()
-                } else {
-                    selectedTab = tab
-                }*/
+        if (tab == selectedTab) {
+            currentBackStack.popToRoot()
+        } else {
+            selectedTab = tab
+        }
     }
 }
 
