@@ -8,9 +8,11 @@
     <string name="login_sign_in">Sign in</string>
     <string name="login_no_account">Don\'t have an account?</string>
     <string name="login_sign_up">Sign up</string>
+    <string name="login_signing_in">Signing in…</string>
 
     <!-- Change password -->
     <string name="change_password_title">Change Password</string>
+    <string name="change_password_updating">Updating password…</string>
     <string name="change_password_current">Current Password</string>
     <string name="change_password_new">New Password</string>
     <string name="change_password_confirm">Confirm Password</string>

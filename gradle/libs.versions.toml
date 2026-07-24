@@ -27,6 +27,8 @@ protobuf = "0.10.0"
 protobufKotlinLite = "4.32.1"
 appcompat = "1.7.1"
 material = "1.14.0"
+material3 = "1.4.0"
+paging = "3.3.6"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -70,6 +72,9 @@ material = { group = "com.google.android.material", name = "material", version.r
 # Gradle plugin artifact — used only by :build-logic convention plugins (compileOnly)
 # to reference the AGP DSL types. Not a runtime dependency of any app module.
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+# Paging 3 — endless-list source/pager (paging-common, transitive) + Compose bindings (LazyPagingItems).
+androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -15,6 +15,10 @@ dependencies {
     // :core:model exposes the UserModel type the repository returns.
     implementation(project(":core:datastore"))
     implementation(project(":core:model"))
+    // Shared skeleton/shimmer placeholders used by the loading state.
+    implementation(project(":core:components"))
+    // Customers tile navigates via feature:customer's CustomerKey.
+    implementation(project(":feature:customer"))
 
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

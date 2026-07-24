@@ -22,6 +22,14 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 sourceCompatibility = JAVA_VERSION
                 targetCompatibility = JAVA_VERSION
             }
+            testOptions {
+                unitTests {
+                    // android.util.Log throws "not mocked" by default, which would make every
+                    // repository and ViewModel that logs untestable on the JVM. Stubbing the
+                    // android.jar keeps that business logic unit-testable (Guideline §3).
+                    isReturnDefaultValues = true
+                }
+            }
         }
 
         configureCommonTestDependencies()

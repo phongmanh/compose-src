@@ -13,6 +13,7 @@ import androidx.navigation3.runtime.NavKey
 import com.liam.compose.features.home.navigation.homeEntries
 import com.liam.compose.features.auth.navigation.authEntries
 import com.liam.compose.features.settings.navigation.settingsEntries
+import com.liam.compose.features.customer.navigation.customerEntries
 import com.liam.compose.R
 import kotlinx.serialization.Serializable
 
@@ -37,6 +38,7 @@ fun EntryProviderScope<NavKey>.getAppEntries(backStack: NavBackStack<NavKey>) {
     homeEntries(backStack = backStack)
     entry<ReportKey.Root> { PlaceholderScreen(stringResource(R.string.tab_report)) }
     settingsEntries()
+    customerEntries(backStack = backStack)
 }
 
 

@@ -18,14 +18,14 @@ class AuthRepository @Inject constructor(
 ) : BaseRepository(errormapper) {
 
     suspend fun getToken(request: AuthPostRequest): Result<AppResponse<GatewayAuthModel>> {
-        return safeApiCall { tokenService.getToken(request) }
+        return safeApiCall("getToken") { tokenService.getToken(request) }
     }
 
     suspend fun auth(authPostRequest: AuthPostRequest): Result<AppResponse<UserModel>> {
-        return safeApiCall { authService.auth(authPostRequest) }
+        return safeApiCall("auth") { authService.auth(authPostRequest) }
     }
 
     suspend fun changePassword(request: ChangePassModel): Result<Any> {
-        return safeApiCall { authService.changePass(request) }
+        return safeApiCall("changePassword") { authService.changePass(request) }
     }
 }

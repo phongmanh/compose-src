@@ -35,7 +35,6 @@ import androidx.compose.material.icons.outlined.RealEstateAgent
 import androidx.compose.material.icons.outlined.StackedLineChart
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material.icons.outlined.TimerOff
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -62,34 +61,40 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.liam.compose.features.home.R
 import com.liam.compose.core.model.UserModel
+import com.liam.compose.core.navigation.LocalNavBackStack
+import com.liam.compose.core.navigation.navigate
+import com.liam.compose.features.customer.navigation.CustomerKey
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
 // --- Layout tokens (kept local; the feature has no design-system module yet) ---
-private val ScreenPadding = 20.dp
-private val HeroCorner = 28.dp
-private val CardCorner = 20.dp
-private val TileCorner = 20.dp
-private val GridSpacing = 14.dp
-private const val GridColumns = 3
+// Internal rather than private so HomeSkeleton can mirror this layout exactly — a skeleton that
+// drifts from the real geometry makes the content jump when it arrives.
+internal val ScreenPadding = 20.dp
+internal val HeroCorner = 28.dp
+internal val CardCorner = 20.dp
+internal val TileCorner = 20.dp
+internal val GridSpacing = 14.dp
+internal const val GRID_COLUMNS = 3
 
 // --- Brand accents for the hero + payment highlight (not part of the Material scheme) ---
-private val HeroGradient = listOf(Color(0xFFEAD283), Color(0xFFD2B94E))
+internal val HeroGradient = listOf(Color(0xFFEAD283), Color(0xFFD2B94E))
 private val PaymentGradient = listOf(Color(0xFFF9A63F), Color(0xFFF15A38))
 private val HeroContent = Color(0xFF3B2F0B)              // dark-on-gold for real contrast
 private val HeroContentMuted = HeroContent.copy(alpha = 0.72f)
 private val NotificationBadge = Color(0xFFE53935)
 
 /** One tappable action in the home grid, each with its own accent so the grid isn't monotone. */
-private data class HomeAction(
+internal data class HomeAction(
     val icon: ImageVector,
     @param:StringRes val labelRes: Int,
     val accent: Color,
 )
 
-private val gridActions = listOf(
+// Internal so HomeSkeleton can lay out one placeholder tile per real action.
+internal val gridActions = listOf(
     HomeAction(Icons.Outlined.StackedLineChart, R.string.home_action_overview, Color(0xFF2481E5)),
     HomeAction(Icons.Outlined.Group, R.string.home_action_customers, Color(0xFF12A594)),
     HomeAction(Icons.Outlined.Handshake, R.string.home_action_contracts, Color(0xFF7C5CFC)),
@@ -106,15 +111,16 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 
 @Composable
 private fun HomeContent(uiState: HomeUiState) {
+    val backStack = LocalNavBackStack.current
     when (uiState) {
-        is HomeUiState.Loading -> StatusMessage(loading = true)
-        is HomeUiState.Success -> HomeDetail(uiState.data)
-        is HomeUiState.Error -> StatusMessage(loading = false)
+        is HomeUiState.Loading -> HomeSkeleton()
+        is HomeUiState.Success -> HomeDetail(uiState.data, backStack = backStack)
+        is HomeUiState.Error -> ErrorMessage()
     }
 }
 
 @Composable
-private fun StatusMessage(loading: Boolean) {
+private fun ErrorMessage() {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -122,19 +128,15 @@ private fun StatusMessage(loading: Boolean) {
         contentAlignment = Alignment.Center,
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            if (loading) {
-                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-            } else {
-                Icon(
-                    imageVector = Icons.Outlined.ErrorOutline,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.size(40.dp),
-                )
-            }
+            Icon(
+                imageVector = Icons.Outlined.ErrorOutline,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.error,
+                modifier = Modifier.size(40.dp),
+            )
             Spacer(Modifier.height(16.dp))
             Text(
-                text = stringResource(if (loading) R.string.home_loading else R.string.home_error),
+                text = stringResource(R.string.home_error),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -143,7 +145,10 @@ private fun StatusMessage(loading: Boolean) {
 }
 
 @Composable
-private fun HomeDetail(data: UserModel) {
+private fun HomeDetail(
+    data: UserModel,
+    backStack: androidx.navigation3.runtime.NavBackStack<androidx.navigation3.runtime.NavKey>? = null
+) {
     val displayName = data.fullName?.takeIf { it.isNotBlank() }
         ?: data.userName?.takeIf { it.isNotBlank() }
         ?: ""
@@ -177,7 +182,11 @@ private fun HomeDetail(data: UserModel) {
             )
             Spacer(Modifier.height(GridSpacing))
 
-            ActionGrid()
+            if (backStack != null) {
+                ActionGrid(backStack = backStack)
+            } else {
+                ActionGridPreview()
+            }
 
             Spacer(Modifier.height(GridSpacing))
 
@@ -383,8 +392,8 @@ private fun IconChip(
 }
 
 @Composable
-private fun ActionGrid() {
-    val rows = gridActions.chunked(GridColumns)
+private fun ActionGrid(backStack: androidx.navigation3.runtime.NavBackStack<androidx.navigation3.runtime.NavKey>) {
+    val rows = gridActions.chunked(GRID_COLUMNS)
     Column {
         rows.forEachIndexed { index, rowActions ->
             Row(
@@ -392,10 +401,10 @@ private fun ActionGrid() {
                 horizontalArrangement = Arrangement.spacedBy(GridSpacing),
             ) {
                 rowActions.forEach { action ->
-                    ActionTile(action = action, modifier = Modifier.weight(1f))
+                    ActionTile(action = action, modifier = Modifier.weight(1f), backStack = backStack)
                 }
                 // Keep the last (possibly short) row aligned to the column grid.
-                repeat(GridColumns - rowActions.size) {
+                repeat(GRID_COLUMNS - rowActions.size) {
                     Spacer(Modifier.weight(1f))
                 }
             }
@@ -405,9 +414,74 @@ private fun ActionGrid() {
 }
 
 @Composable
-private fun ActionTile(action: HomeAction, modifier: Modifier = Modifier) {
+private fun ActionGridPreview() {
+    val rows = gridActions.chunked(GRID_COLUMNS)
+    Column {
+        rows.forEachIndexed { index, rowActions ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(GridSpacing),
+            ) {
+                rowActions.forEach { action ->
+                    ActionTilePreview(action = action, modifier = Modifier.weight(1f))
+                }
+                // Keep the last (possibly short) row aligned to the column grid.
+                repeat(GRID_COLUMNS - rowActions.size) {
+                    Spacer(Modifier.weight(1f))
+                }
+            }
+            if (index < rows.lastIndex) Spacer(Modifier.height(GridSpacing))
+        }
+    }
+}
+
+@Composable
+private fun ActionTile(
+    action: HomeAction,
+    modifier: Modifier = Modifier,
+    backStack: androidx.navigation3.runtime.NavBackStack<androidx.navigation3.runtime.NavKey>,
+) {
     Surface(
-        onClick = { /* TODO: navigate to ${action.labelRes} once destinations exist */ },
+        onClick = {
+            if (action.labelRes == R.string.home_action_customers) {
+                backStack.navigate(CustomerKey.Root)
+            }
+            // TODO: handle other actions once their destinations exist
+        },
+        modifier = modifier.height(110.dp),
+        shape = RoundedCornerShape(TileCorner),
+        color = MaterialTheme.colorScheme.surface,
+        shadowElevation = 2.dp,
+        tonalElevation = 1.dp,
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            IconChip(icon = action.icon, accent = action.accent)
+            Spacer(Modifier.height(10.dp))
+            Text(
+                text = stringResource(action.labelRes),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+    }
+}
+
+@Composable
+private fun ActionTilePreview(
+    action: HomeAction,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        onClick = {
+            // No-op in preview
+        },
         modifier = modifier.height(110.dp),
         shape = RoundedCornerShape(TileCorner),
         color = MaterialTheme.colorScheme.surface,
@@ -492,15 +566,25 @@ private fun greetingResFor(calendar: Calendar): Int =
 @Preview(showBackground = true, heightDp = 780)
 @Composable
 private fun HomeDetailPreview() {
+    val testUser = UserModel(
+        userName = "demo_user",
+        fullName = "Demo User",
+        role = "Admin"
+    )
     MaterialTheme {
-        HomeDetail(UserModel(userName = "nguyenvana", fullName = "Nguyễn Văn A", role = "Quản lý"))
+        HomeDetail(data = testUser)
     }
 }
 
 @Preview(showBackground = true, heightDp = 780, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun HomeDetailDarkPreview() {
+    val testUser = UserModel(
+        userName = "demo_user",
+        fullName = "Demo User",
+        role = "Admin"
+    )
     MaterialTheme(colorScheme = androidx.compose.material3.darkColorScheme()) {
-        HomeDetail(UserModel(userName = "nguyenvana", fullName = "Nguyễn Văn A", role = "Quản lý"))
+        HomeDetail(data = testUser)
     }
 }

@@ -3,6 +3,7 @@ package com.liam.compose.core.networking.remote
 import com.liam.compose.core.networking.model.ApiResponse
 import retrofit2.HttpException
 import java.io.IOException
+import java.io.InterruptedIOException
 import java.net.SocketTimeoutException
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
@@ -13,7 +14,11 @@ class ErrorMapper @Inject constructor(private val gson: Gson) {
     fun convertToException(throwable: Throwable): ApiException {
         return when (throwable) {
             is HttpException -> convertHttpException(throwable)
+            // SocketTimeoutException (connect/read/write) extends InterruptedIOException, and
+            // OkHttp raises a plain InterruptedIOException when callTimeout fires — both are
+            // timeouts, so they must be matched before the generic IOException branch.
             is SocketTimeoutException -> ApiException.TimeoutException()
+            is InterruptedIOException -> ApiException.TimeoutException()
             is IOException -> ApiException.NetworkException(throwable)
             is JsonSyntaxException -> ApiException.ParseException("Invalid JSON response")
             is ApiException -> throwable

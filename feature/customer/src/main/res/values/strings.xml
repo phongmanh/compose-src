@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Titles -->
+    <string name="customer_list_title">Khách hàng</string>
+    <string name="customer_form_create_title">Thêm khách hàng</string>
+    <string name="customer_form_edit_title">Cập nhật khách hàng</string>
+
+    <!-- Button labels -->
+    <string name="customer_button_save">Lưu</string>
+    <string name="customer_button_edit">Sửa</string>
+    <string name="customer_button_search">Tìm kiếm</string>
+    <string name="customer_button_create">Thêm</string>
+
+    <!-- Actions -->
+    <string name="customer_action_visited">Đã ghé thăm</string>
+    <string name="customer_action_not_visited">Chưa ghé thăm</string>
+    <string name="customer_action_scroll_top">Lên đầu danh sách</string>
+
+    <!-- Form labels -->
+    <string name="customer_form_name">Tên khách hàng</string>
+    <string name="customer_form_code">Mã khách hàng</string>
+    <string name="customer_form_phone">Số điện thoại</string>
+    <string name="customer_form_address">Địa chỉ</string>
+    <string name="customer_form_type">Loại khách hàng</string>
+    <string name="customer_form_contact">Người liên hệ</string>
+    <string name="customer_form_tax_code">Mã số thuế</string>
+    <string name="customer_form_note">Ghi chú</string>
+    <string name="customer_form_students">Số học sinh</string>
+    <string name="customer_form_province">Tỉnh/Thành phố</string>
+    <string name="customer_form_route">Tuyến</string>
+
+    <!-- Error/validation -->
+    <string name="customer_error_name_required">Tên khách hàng là bắt buộc</string>
+    <string name="customer_error_phone_required">Số điện thoại là bắt buộc</string>
+    <string name="customer_error_address_required">Địa chỉ là bắt buộc</string>
+    <string name="customer_error_phone_invalid">Số điện thoại không hợp lệ</string>
+    <string name="customer_error_save_failed">Lưu khách hàng thất bại</string>
+
+    <!-- Status -->
+    <string name="customer_status_not_yet">Chưa ghé thăm</string>
+    <string name="customer_status_visited">Đã ghé thăm</string>
+
+    <!-- Search & filter -->
+    <string name="customer_search_hint">Tìm tên, mã, số điện thoại</string>
+    <string name="customer_search_clear">Xoá từ khoá</string>
+    <string name="customer_filter_seller">Nhân viên</string>
+    <string name="customer_filter_route">Tuyến</string>
+    <string name="customer_filter_status">Trạng thái</string>
+    <string name="customer_filter_date">Ngày ghé</string>
+    <string name="customer_filter_all">Tất cả</string>
+    <string name="customer_filter_clear">Xoá lọc (%1$d)</string>
+    <string name="customer_filter_search_option">Tìm trong danh sách</string>
+    <string name="customer_filter_no_option">Không có lựa chọn nào</string>
+    <string name="customer_filter_close">Đóng</string>
+
+    <!-- List states -->
+    <string name="customer_list_count">%1$d khách hàng</string>
+    <string name="customer_list_loading">Đang tải danh sách khách hàng…</string>
+    <string name="customer_empty_title">Không tìm thấy khách hàng</string>
+    <string name="customer_empty_message">Thử đổi từ khoá hoặc bỏ bớt bộ lọc.</string>
+    <string name="customer_empty_clear_filters">Xoá bộ lọc</string>
+    <string name="customer_error_title">Không tải được danh sách</string>
+    <string name="customer_error_generic">Đã có lỗi xảy ra. Vui lòng thử lại.</string>
+    <string name="customer_action_retry">Thử lại</string>
+    <string name="customer_action_load_more">Tải thêm</string>
+
+    <!-- Row -->
+    <string name="customer_row_no_phone">Chưa có số điện thoại</string>
+    <string name="customer_row_no_address">Chưa có địa chỉ</string>
+    <string name="customer_row_unknown_name">Khách hàng chưa đặt tên</string>
+    <string name="customer_row_actions">Tuỳ chọn</string>
+    <string name="customer_row_mark_visited">Đánh dấu đã ghé thăm</string>
+
+    <!-- Dialogs -->
+    <string name="customer_dialog_ok">OK</string>
+    <string name="customer_dialog_cancel">Huỷ</string>
+    <string name="customer_dialog_clear">Xoá</string>
+
+    <!-- Form sections & states -->
+    <string name="customer_form_back">Quay lại</string>
+    <string name="customer_form_section_basic">Thông tin cơ bản</string>
+    <string name="customer_form_section_contact">Liên hệ</string>
+    <string name="customer_form_section_other">Thông tin khác</string>
+    <string name="customer_form_required_hint">* Trường bắt buộc</string>
+    <string name="customer_form_saving">Đang lưu…</string>
+    <string name="customer_form_saved">Đã lưu khách hàng</string>
+    <string name="customer_form_loading">Đang tải biểu mẫu…</string>
+    <string name="customer_form_select_hint">Chọn</string>
+</resources>

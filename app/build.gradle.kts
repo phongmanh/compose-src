@@ -34,6 +34,7 @@ dependencies {
     implementation(project(":feature:auth"))
     implementation(project(":feature:home"))
     implementation(project(":feature:settings"))
+    implementation(project(":feature:customer"))
 
     // Compose (BOM + ui + ui-tooling-preview + debug ui-tooling come from the convention plugin)
     implementation(libs.androidx.activity.compose)

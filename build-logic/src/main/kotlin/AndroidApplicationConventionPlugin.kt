@@ -22,6 +22,13 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 sourceCompatibility = JAVA_VERSION
                 targetCompatibility = JAVA_VERSION
             }
+            testOptions {
+                unitTests {
+                    // Matches the library convention: android.util.Log and friends return
+                    // defaults instead of throwing "not mocked" in JVM unit tests.
+                    isReturnDefaultValues = true
+                }
+            }
         }
 
         configureCommonTestDependencies()
